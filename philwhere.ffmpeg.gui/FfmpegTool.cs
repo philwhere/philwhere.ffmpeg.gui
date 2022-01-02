@@ -83,6 +83,7 @@ namespace philwhere.ffmpeg.gui
                 aspectRatioTextBox.Enabled = !ignoreAspectRatioCheckBox.Checked;
                 aspectRatioTextBox.Font = new Font(aspectRatioTextBox.Font,
                     ignoreAspectRatioCheckBox.Checked ? FontStyle.Strikeout : FontStyle.Regular);
+                dirLabel.Text = $"Directory: {_file.DirectoryName}";
             }
             cliTextBox.Text = prettyPrintCheckBox.Checked ? PrettyPrintFfmpegArguments : ActualFfmpegArguments;
         }

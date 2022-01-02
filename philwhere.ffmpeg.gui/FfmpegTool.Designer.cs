@@ -38,6 +38,7 @@ namespace philwhere.ffmpeg.gui
             this.ignoreDownmixCheckBox = new System.Windows.Forms.CheckBox();
             this.prettyPrintCheckBox = new System.Windows.Forms.CheckBox();
             this.cliPreviewGroupBox = new System.Windows.Forms.GroupBox();
+            this.dirLabel = new System.Windows.Forms.Label();
             this.aspectRatioGroupBox.SuspendLayout();
             this.audioGroupBox.SuspendLayout();
             this.cliPreviewGroupBox.SuspendLayout();
@@ -46,7 +47,7 @@ namespace philwhere.ffmpeg.gui
             // runButton
             // 
             this.runButton.Enabled = false;
-            this.runButton.Location = new System.Drawing.Point(487, 156);
+            this.runButton.Location = new System.Drawing.Point(487, 122);
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(75, 23);
             this.runButton.TabIndex = 4;
@@ -60,7 +61,7 @@ namespace philwhere.ffmpeg.gui
             this.cliTextBox.Multiline = true;
             this.cliTextBox.Name = "cliTextBox";
             this.cliTextBox.ReadOnly = true;
-            this.cliTextBox.Size = new System.Drawing.Size(556, 128);
+            this.cliTextBox.Size = new System.Drawing.Size(556, 94);
             this.cliTextBox.TabIndex = 3;
             this.cliTextBox.TabStop = false;
             this.cliTextBox.Text = "Drag file into form to get started";
@@ -128,7 +129,7 @@ namespace philwhere.ffmpeg.gui
             this.prettyPrintCheckBox.AutoSize = true;
             this.prettyPrintCheckBox.Checked = true;
             this.prettyPrintCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.prettyPrintCheckBox.Location = new System.Drawing.Point(6, 156);
+            this.prettyPrintCheckBox.Location = new System.Drawing.Point(6, 122);
             this.prettyPrintCheckBox.Name = "prettyPrintCheckBox";
             this.prettyPrintCheckBox.Size = new System.Drawing.Size(82, 19);
             this.prettyPrintCheckBox.TabIndex = 6;
@@ -142,18 +143,27 @@ namespace philwhere.ffmpeg.gui
             this.cliPreviewGroupBox.Controls.Add(this.cliTextBox);
             this.cliPreviewGroupBox.Controls.Add(this.runButton);
             this.cliPreviewGroupBox.Enabled = false;
-            this.cliPreviewGroupBox.Location = new System.Drawing.Point(46, 96);
+            this.cliPreviewGroupBox.Location = new System.Drawing.Point(46, 143);
             this.cliPreviewGroupBox.Name = "cliPreviewGroupBox";
-            this.cliPreviewGroupBox.Size = new System.Drawing.Size(568, 195);
+            this.cliPreviewGroupBox.Size = new System.Drawing.Size(568, 158);
             this.cliPreviewGroupBox.TabIndex = 7;
             this.cliPreviewGroupBox.TabStop = false;
             this.cliPreviewGroupBox.Text = "FFMPEG Arguments";
             // 
-            // HomeForm
+            // dirLabel
+            // 
+            this.dirLabel.AutoSize = true;
+            this.dirLabel.Location = new System.Drawing.Point(46, 109);
+            this.dirLabel.Name = "dirLabel";
+            this.dirLabel.Size = new System.Drawing.Size(0, 15);
+            this.dirLabel.TabIndex = 8;
+            // 
+            // FfmpegTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(664, 313);
+            this.ClientSize = new System.Drawing.Size(664, 336);
+            this.Controls.Add(this.dirLabel);
             this.Controls.Add(this.cliPreviewGroupBox);
             this.Controls.Add(this.audioGroupBox);
             this.Controls.Add(this.aspectRatioGroupBox);
@@ -166,6 +176,7 @@ namespace philwhere.ffmpeg.gui
             this.cliPreviewGroupBox.ResumeLayout(false);
             this.cliPreviewGroupBox.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -180,6 +191,7 @@ namespace philwhere.ffmpeg.gui
         private System.Windows.Forms.CheckBox ignoreDownmixCheckBox;
         private System.Windows.Forms.CheckBox prettyPrintCheckBox;
         private System.Windows.Forms.GroupBox cliPreviewGroupBox;
+        private System.Windows.Forms.Label dirLabel;
     }
 }
 
