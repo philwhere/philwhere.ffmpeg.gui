@@ -10,13 +10,8 @@ namespace philwhere.ffmpeg.gui
     public partial class FfmpegTool : Form
     {
         private FileInfo _file;
-        private string PrettyPrintFfmpegArguments =>
-            $"-i \"{_file.Name}\" " + Environment.NewLine +
-            AspectRatioArgument +
-            StereoDownmixArgument +
-            $"-c copy \"{Path.GetFileNameWithoutExtension(_file.FullName)}_done.mp4\"";
-        private string ActualFfmpegArguments =>
-            PrettyPrintFfmpegArguments.Replace(Environment.NewLine, string.Empty);
+        private string PrettyPrintFfmpegArguments => BuildPrettyFfmpegArgs();
+        private string ActualFfmpegArguments => PrettyPrintFfmpegArguments.Replace(Environment.NewLine, string.Empty);
         private string AspectRatioArgument => 
             ignoreAspectRatioCheckBox.Checked ? null : $"-aspect {aspectRatioTextBox.Text} " + Environment.NewLine;
         private string StereoDownmixArgument =>
@@ -86,6 +81,17 @@ namespace philwhere.ffmpeg.gui
                 dirLabel.Text = $"Directory: {_file.DirectoryName}";
             }
             cliTextBox.Text = prettyPrintCheckBox.Checked ? PrettyPrintFfmpegArguments : ActualFfmpegArguments;
+        }
+
+        private string BuildPrettyFfmpegArgs()
+        {
+            var outputFilename = $"{Path.GetFileNameWithoutExtension(_file.FullName)}.mp4";
+            if (outputFilename.Equals(_file.Name, StringComparison.OrdinalIgnoreCase))
+                outputFilename = $"{Path.GetFileNameWithoutExtension(_file.FullName)}_done.mp4";
+            return $"-i \"{_file.Name}\" " + Environment.NewLine +
+                   AspectRatioArgument +
+                   StereoDownmixArgument +
+                   $"-c copy \"{outputFilename}\"";
         }
     }
 }
