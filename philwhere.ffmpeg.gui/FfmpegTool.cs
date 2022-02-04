@@ -10,6 +10,7 @@ namespace philwhere.ffmpeg.gui
     public partial class FfmpegTool : Form
     {
         private FileInfo _file;
+        private string _changedOutputDirectory;
         private string PrettyPrintFfmpegArguments => BuildPrettyFfmpegArgs();
         private string ActualFfmpegArguments => PrettyPrintFfmpegArguments.Replace(Environment.NewLine, string.Empty);
         private string AspectRatioArgument => 
@@ -39,8 +40,8 @@ namespace philwhere.ffmpeg.gui
                 }
             };
             process.Start();
-            process.EnableRaisingEvents = true;
-            process.Exited += (_, _) => MessageBox.Show("Done");
+            //process.EnableRaisingEvents = true;
+            //process.Exited += (_, _) => MessageBox.Show("Done");
         }
 
         private void Form_DragEnter(object sender, DragEventArgs e) {
@@ -75,23 +76,40 @@ namespace philwhere.ffmpeg.gui
                 aspectRatioGroupBox.Enabled = true;
                 audioGroupBox.Enabled = true;
                 cliPreviewGroupBox.Enabled = true;
+                directoryGroup.Enabled = true;
                 aspectRatioTextBox.Enabled = !ignoreAspectRatioCheckBox.Checked;
                 aspectRatioTextBox.Font = new Font(aspectRatioTextBox.Font,
                     ignoreAspectRatioCheckBox.Checked ? FontStyle.Strikeout : FontStyle.Regular);
-                dirLabel.Text = $"Directory: {_file.DirectoryName}";
+                dirTextBox.Text = _changedOutputDirectory ?? _file.DirectoryName;
             }
-            cliTextBox.Text = prettyPrintCheckBox.Checked ? PrettyPrintFfmpegArguments : ActualFfmpegArguments;
+            UpdateArgumentPreview();
+        }
+
+        private void UpdateArgumentPreview()
+        {
+            cliTextBox.Text = prettyPrintCheckBox.Checked 
+                ? PrettyPrintFfmpegArguments
+                : ActualFfmpegArguments;
         }
 
         private string BuildPrettyFfmpegArgs()
         {
-            var outputFilename = $"{Path.GetFileNameWithoutExtension(_file.FullName)}.mp4";
+            var directory = dirTextBox.Text == _file.DirectoryName ? "" : dirTextBox.Text;
+            var name = Path.GetFileNameWithoutExtension(_file.FullName);
+
+            var outputFilename = Path.Join(directory, $"{name}.mp4");
             if (outputFilename.Equals(_file.Name, StringComparison.OrdinalIgnoreCase))
-                outputFilename = $"{Path.GetFileNameWithoutExtension(_file.FullName)}_done.mp4";
+                outputFilename = Path.Join(directory, $"{name}_done.mp4");
             return $"-i \"{_file.Name}\" " + Environment.NewLine +
                    AspectRatioArgument +
                    StereoDownmixArgument +
                    $"-c copy \"{outputFilename}\"";
+        }
+
+        private void dirTextBox_TextChanged(object sender, EventArgs e)
+        {
+            _changedOutputDirectory = dirTextBox.Text;
+            UpdateArgumentPreview();
         }
     }
 }

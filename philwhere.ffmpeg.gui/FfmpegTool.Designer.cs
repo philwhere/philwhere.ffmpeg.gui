@@ -38,10 +38,12 @@ namespace philwhere.ffmpeg.gui
             this.ignoreDownmixCheckBox = new System.Windows.Forms.CheckBox();
             this.prettyPrintCheckBox = new System.Windows.Forms.CheckBox();
             this.cliPreviewGroupBox = new System.Windows.Forms.GroupBox();
-            this.dirLabel = new System.Windows.Forms.Label();
+            this.dirTextBox = new System.Windows.Forms.TextBox();
+            this.directoryGroup = new System.Windows.Forms.GroupBox();
             this.aspectRatioGroupBox.SuspendLayout();
             this.audioGroupBox.SuspendLayout();
             this.cliPreviewGroupBox.SuspendLayout();
+            this.directoryGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // runButton
@@ -150,20 +152,31 @@ namespace philwhere.ffmpeg.gui
             this.cliPreviewGroupBox.TabStop = false;
             this.cliPreviewGroupBox.Text = "FFMPEG Arguments";
             // 
-            // dirLabel
+            // dirTextBox
             // 
-            this.dirLabel.AutoSize = true;
-            this.dirLabel.Location = new System.Drawing.Point(46, 109);
-            this.dirLabel.Name = "dirLabel";
-            this.dirLabel.Size = new System.Drawing.Size(0, 15);
-            this.dirLabel.TabIndex = 8;
+            this.dirTextBox.Location = new System.Drawing.Point(6, 18);
+            this.dirTextBox.Name = "dirTextBox";
+            this.dirTextBox.Size = new System.Drawing.Size(556, 23);
+            this.dirTextBox.TabIndex = 9;
+            this.dirTextBox.TextChanged += new System.EventHandler(this.dirTextBox_TextChanged);
+            // 
+            // directoryGroup
+            // 
+            this.directoryGroup.Controls.Add(this.dirTextBox);
+            this.directoryGroup.Enabled = false;
+            this.directoryGroup.Location = new System.Drawing.Point(46, 93);
+            this.directoryGroup.Name = "directoryGroup";
+            this.directoryGroup.Size = new System.Drawing.Size(568, 47);
+            this.directoryGroup.TabIndex = 9;
+            this.directoryGroup.TabStop = false;
+            this.directoryGroup.Text = "Output Directory";
             // 
             // FfmpegTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(664, 336);
-            this.Controls.Add(this.dirLabel);
+            this.Controls.Add(this.directoryGroup);
             this.Controls.Add(this.cliPreviewGroupBox);
             this.Controls.Add(this.audioGroupBox);
             this.Controls.Add(this.aspectRatioGroupBox);
@@ -175,8 +188,9 @@ namespace philwhere.ffmpeg.gui
             this.audioGroupBox.PerformLayout();
             this.cliPreviewGroupBox.ResumeLayout(false);
             this.cliPreviewGroupBox.PerformLayout();
+            this.directoryGroup.ResumeLayout(false);
+            this.directoryGroup.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -191,7 +205,8 @@ namespace philwhere.ffmpeg.gui
         private System.Windows.Forms.CheckBox ignoreDownmixCheckBox;
         private System.Windows.Forms.CheckBox prettyPrintCheckBox;
         private System.Windows.Forms.GroupBox cliPreviewGroupBox;
-        private System.Windows.Forms.Label dirLabel;
+        private System.Windows.Forms.TextBox dirTextBox;
+        private System.Windows.Forms.GroupBox directoryGroup;
     }
 }
 
