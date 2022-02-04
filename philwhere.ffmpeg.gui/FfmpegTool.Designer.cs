@@ -40,15 +40,18 @@ namespace philwhere.ffmpeg.gui
             this.cliPreviewGroupBox = new System.Windows.Forms.GroupBox();
             this.dirTextBox = new System.Windows.Forms.TextBox();
             this.directoryGroup = new System.Windows.Forms.GroupBox();
+            this.containerGroup = new System.Windows.Forms.GroupBox();
+            this.mkvButton = new System.Windows.Forms.RadioButton();
+            this.mp4Button = new System.Windows.Forms.RadioButton();
             this.aspectRatioGroupBox.SuspendLayout();
             this.audioGroupBox.SuspendLayout();
             this.cliPreviewGroupBox.SuspendLayout();
             this.directoryGroup.SuspendLayout();
+            this.containerGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // runButton
             // 
-            this.runButton.Enabled = false;
             this.runButton.Location = new System.Drawing.Point(487, 122);
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(75, 23);
@@ -171,11 +174,48 @@ namespace philwhere.ffmpeg.gui
             this.directoryGroup.TabStop = false;
             this.directoryGroup.Text = "Output Directory";
             // 
+            // containerGroup
+            // 
+            this.containerGroup.Controls.Add(this.mkvButton);
+            this.containerGroup.Controls.Add(this.mp4Button);
+            this.containerGroup.Enabled = false;
+            this.containerGroup.Location = new System.Drawing.Point(458, 29);
+            this.containerGroup.Name = "containerGroup";
+            this.containerGroup.Size = new System.Drawing.Size(156, 61);
+            this.containerGroup.TabIndex = 10;
+            this.containerGroup.TabStop = false;
+            this.containerGroup.Text = "Container";
+            // 
+            // mkvButton
+            // 
+            this.mkvButton.AutoSize = true;
+            this.mkvButton.Location = new System.Drawing.Point(84, 24);
+            this.mkvButton.Name = "mkvButton";
+            this.mkvButton.Size = new System.Drawing.Size(48, 19);
+            this.mkvButton.TabIndex = 1;
+            this.mkvButton.Text = "mkv";
+            this.mkvButton.UseVisualStyleBackColor = true;
+            this.mkvButton.CheckedChanged += new System.EventHandler(this.anything_Changed);
+            // 
+            // mp4Button
+            // 
+            this.mp4Button.AutoSize = true;
+            this.mp4Button.Checked = true;
+            this.mp4Button.Location = new System.Drawing.Point(20, 24);
+            this.mp4Button.Name = "mp4Button";
+            this.mp4Button.Size = new System.Drawing.Size(49, 19);
+            this.mp4Button.TabIndex = 0;
+            this.mp4Button.TabStop = true;
+            this.mp4Button.Text = "mp4";
+            this.mp4Button.UseVisualStyleBackColor = true;
+            this.mp4Button.CheckedChanged += new System.EventHandler(this.anything_Changed);
+            // 
             // FfmpegTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(664, 336);
+            this.Controls.Add(this.containerGroup);
             this.Controls.Add(this.directoryGroup);
             this.Controls.Add(this.cliPreviewGroupBox);
             this.Controls.Add(this.audioGroupBox);
@@ -190,6 +230,8 @@ namespace philwhere.ffmpeg.gui
             this.cliPreviewGroupBox.PerformLayout();
             this.directoryGroup.ResumeLayout(false);
             this.directoryGroup.PerformLayout();
+            this.containerGroup.ResumeLayout(false);
+            this.containerGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -207,6 +249,9 @@ namespace philwhere.ffmpeg.gui
         private System.Windows.Forms.GroupBox cliPreviewGroupBox;
         private System.Windows.Forms.TextBox dirTextBox;
         private System.Windows.Forms.GroupBox directoryGroup;
+        private System.Windows.Forms.GroupBox containerGroup;
+        private System.Windows.Forms.RadioButton mkvButton;
+        private System.Windows.Forms.RadioButton mp4Button;
     }
 }
 

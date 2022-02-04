@@ -72,11 +72,7 @@ namespace philwhere.ffmpeg.gui
         {
             if (_file.Exists)
             {
-                runButton.Enabled = true;
-                aspectRatioGroupBox.Enabled = true;
-                audioGroupBox.Enabled = true;
-                cliPreviewGroupBox.Enabled = true;
-                directoryGroup.Enabled = true;
+                Controls.OfType<GroupBox>().ToList().ForEach(g => g.Enabled = true);
                 aspectRatioTextBox.Enabled = !ignoreAspectRatioCheckBox.Checked;
                 aspectRatioTextBox.Font = new Font(aspectRatioTextBox.Font,
                     ignoreAspectRatioCheckBox.Checked ? FontStyle.Strikeout : FontStyle.Regular);
@@ -87,7 +83,7 @@ namespace philwhere.ffmpeg.gui
 
         private void UpdateArgumentPreview()
         {
-            cliTextBox.Text = prettyPrintCheckBox.Checked 
+            cliTextBox.Text = prettyPrintCheckBox.Checked
                 ? PrettyPrintFfmpegArguments
                 : ActualFfmpegArguments;
         }
@@ -96,11 +92,14 @@ namespace philwhere.ffmpeg.gui
         {
             var directory = dirTextBox.Text == _file.DirectoryName ? "" : dirTextBox.Text;
             var name = Path.GetFileNameWithoutExtension(_file.FullName);
+            var container = containerGroup.Controls.OfType<RadioButton>()
+                .First(n => n.Checked).Text;
 
-            var outputFilename = Path.Join(directory, $"{name}.mp4");
+            var outputFilename = Path.Join(directory, $"{name}.{container}");
             if (outputFilename.Equals(_file.Name, StringComparison.OrdinalIgnoreCase))
-                outputFilename = Path.Join(directory, $"{name}_done.mp4");
-            return $"-i \"{_file.Name}\" " + Environment.NewLine +
+                outputFilename = Path.Join(directory, $"{name}_done.{container}");
+            return $"-i \"{_file.Name}\" " +
+                   Environment.NewLine +
                    AspectRatioArgument +
                    StereoDownmixArgument +
                    $"-c copy \"{outputFilename}\"";
@@ -108,7 +107,7 @@ namespace philwhere.ffmpeg.gui
 
         private void dirTextBox_TextChanged(object sender, EventArgs e)
         {
-            _changedOutputDirectory = dirTextBox.Text;
+            _changedOutputDirectory = dirTextBox.Text == _file.DirectoryName ? null : dirTextBox.Text;
             UpdateArgumentPreview();
         }
     }
