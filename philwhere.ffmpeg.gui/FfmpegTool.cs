@@ -14,9 +14,10 @@ namespace philwhere.ffmpeg.gui
         private string PrettyPrintFfmpegArguments => BuildPrettyFfmpegArgs();
         private string ActualFfmpegArguments => PrettyPrintFfmpegArguments.Replace(Environment.NewLine, string.Empty);
         private string AspectRatioArgument => 
-            ignoreAspectRatioCheckBox.Checked ? null : $"-aspect {aspectRatioTextBox.Text} " + Environment.NewLine;
-        private string StereoDownmixArgument =>
-            ignoreDownmixCheckBox.Checked ? null : "-ac 1 " + Environment.NewLine;
+            ignoreAspectRatioCheckBox.Checked ? null : $"-aspect {aspectRatioTextBox.Text}{Environment.NewLine}-c copy ";
+        private string StereoDownmixArgument => ignoreDownmixCheckBox.Checked ? null : "-ac 1 ";
+        private string DefaultCopyArgument => ignoreAspectRatioCheckBox.Checked && ignoreDownmixCheckBox.Checked ? "-c copy " : "";
+
 
         public FfmpegTool()
         {
@@ -79,6 +80,8 @@ namespace philwhere.ffmpeg.gui
                 dirTextBox.Text = _changedOutputDirectory ?? _file.DirectoryName;
             }
             UpdateArgumentPreview();
+            aspectRatioGroupBox.Enabled = ignoreDownmixCheckBox.Checked;
+            audioGroupBox.Enabled = ignoreAspectRatioCheckBox.Checked;
         }
 
         private void UpdateArgumentPreview()
@@ -102,9 +105,9 @@ namespace philwhere.ffmpeg.gui
                    Environment.NewLine +
                    AspectRatioArgument +
                    StereoDownmixArgument +
-                   $"-c copy \"{outputFilename}\"";
+                   DefaultCopyArgument +
+                   $"\"{outputFilename}\"";
         }
-
         private void dirTextBox_TextChanged(object sender, EventArgs e)
         {
             _changedOutputDirectory = dirTextBox.Text == _file.DirectoryName ? null : dirTextBox.Text;

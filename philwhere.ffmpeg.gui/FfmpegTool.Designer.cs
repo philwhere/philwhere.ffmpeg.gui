@@ -86,6 +86,8 @@ namespace philwhere.ffmpeg.gui
             // ignoreAspectRatioCheckBox
             // 
             this.ignoreAspectRatioCheckBox.AutoSize = true;
+            this.ignoreAspectRatioCheckBox.Checked = true;
+            this.ignoreAspectRatioCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ignoreAspectRatioCheckBox.Location = new System.Drawing.Point(100, 25);
             this.ignoreAspectRatioCheckBox.Name = "ignoreAspectRatioCheckBox";
             this.ignoreAspectRatioCheckBox.Size = new System.Drawing.Size(60, 19);
