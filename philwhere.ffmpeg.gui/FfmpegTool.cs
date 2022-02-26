@@ -41,8 +41,14 @@ namespace philwhere.ffmpeg.gui
                 }
             };
             process.Start();
-            //process.EnableRaisingEvents = true;
-            //process.Exited += (_, _) => MessageBox.Show("Done");
+            process.EnableRaisingEvents = true;
+            progressBar.MarqueeAnimationSpeed = 15;
+            progressBar.Style = ProgressBarStyle.Marquee;
+            process.Exited += (_, _) => Invoke(new Action(() =>
+            {
+                progressBar.Style = ProgressBarStyle.Continuous;
+                progressBar.Value = 100;
+            }));
         }
 
         private void Form_DragEnter(object sender, DragEventArgs e) {
@@ -68,6 +74,12 @@ namespace philwhere.ffmpeg.gui
             UpdateEverything();
         }
 
+        private void dirTextBox_TextChanged(object sender, EventArgs e)
+        {
+            _changedOutputDirectory = dirTextBox.Text == _file.DirectoryName ? null : dirTextBox.Text;
+            UpdateArgumentPreview();
+        }
+
 
         private void UpdateEverything()
         {
@@ -82,6 +94,7 @@ namespace philwhere.ffmpeg.gui
             UpdateArgumentPreview();
             aspectRatioGroupBox.Enabled = ignoreDownmixCheckBox.Checked;
             audioGroupBox.Enabled = ignoreAspectRatioCheckBox.Checked;
+            progressBar.Value = 0;
         }
 
         private void UpdateArgumentPreview()
@@ -107,11 +120,6 @@ namespace philwhere.ffmpeg.gui
                    StereoDownmixArgument +
                    DefaultCopyArgument +
                    $"\"{outputFilename}\"";
-        }
-        private void dirTextBox_TextChanged(object sender, EventArgs e)
-        {
-            _changedOutputDirectory = dirTextBox.Text == _file.DirectoryName ? null : dirTextBox.Text;
-            UpdateArgumentPreview();
         }
     }
 }

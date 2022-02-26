@@ -38,6 +38,7 @@ namespace philwhere.ffmpeg.gui
             this.ignoreDownmixCheckBox = new System.Windows.Forms.CheckBox();
             this.prettyPrintCheckBox = new System.Windows.Forms.CheckBox();
             this.cliPreviewGroupBox = new System.Windows.Forms.GroupBox();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.dirTextBox = new System.Windows.Forms.TextBox();
             this.directoryGroup = new System.Windows.Forms.GroupBox();
             this.containerGroup = new System.Windows.Forms.GroupBox();
@@ -136,7 +137,7 @@ namespace philwhere.ffmpeg.gui
             this.prettyPrintCheckBox.AutoSize = true;
             this.prettyPrintCheckBox.Checked = true;
             this.prettyPrintCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.prettyPrintCheckBox.Location = new System.Drawing.Point(6, 122);
+            this.prettyPrintCheckBox.Location = new System.Drawing.Point(7, 125);
             this.prettyPrintCheckBox.Name = "prettyPrintCheckBox";
             this.prettyPrintCheckBox.Size = new System.Drawing.Size(82, 19);
             this.prettyPrintCheckBox.TabIndex = 6;
@@ -146,16 +147,24 @@ namespace philwhere.ffmpeg.gui
             // 
             // cliPreviewGroupBox
             // 
+            this.cliPreviewGroupBox.Controls.Add(this.progressBar);
             this.cliPreviewGroupBox.Controls.Add(this.prettyPrintCheckBox);
             this.cliPreviewGroupBox.Controls.Add(this.cliTextBox);
             this.cliPreviewGroupBox.Controls.Add(this.runButton);
             this.cliPreviewGroupBox.Enabled = false;
             this.cliPreviewGroupBox.Location = new System.Drawing.Point(46, 143);
             this.cliPreviewGroupBox.Name = "cliPreviewGroupBox";
-            this.cliPreviewGroupBox.Size = new System.Drawing.Size(568, 158);
+            this.cliPreviewGroupBox.Size = new System.Drawing.Size(568, 153);
             this.cliPreviewGroupBox.TabIndex = 7;
             this.cliPreviewGroupBox.TabStop = false;
             this.cliPreviewGroupBox.Text = "FFMPEG Arguments";
+            // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(100, 122);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(365, 23);
+            this.progressBar.TabIndex = 7;
             // 
             // dirTextBox
             // 
@@ -254,6 +263,7 @@ namespace philwhere.ffmpeg.gui
         private System.Windows.Forms.GroupBox containerGroup;
         private System.Windows.Forms.RadioButton mkvButton;
         private System.Windows.Forms.RadioButton mp4Button;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
 
