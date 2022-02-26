@@ -14,7 +14,7 @@ namespace philwhere.ffmpeg.gui
         private string PrettyPrintFfmpegArguments => BuildPrettyFfmpegArgs();
         private string ActualFfmpegArguments => PrettyPrintFfmpegArguments.Replace(Environment.NewLine, string.Empty);
         private string AspectRatioArgument => 
-            ignoreAspectRatioCheckBox.Checked ? null : $"-aspect {aspectRatioTextBox.Text}{Environment.NewLine}-c copy ";
+            ignoreAspectRatioCheckBox.Checked ? null : $"-aspect {aspectRatioTextBox.Text} {Environment.NewLine}-c copy ";
         private string StereoDownmixArgument => ignoreDownmixCheckBox.Checked ? null : "-ac 1 ";
         private string DefaultCopyArgument => ignoreAspectRatioCheckBox.Checked && ignoreDownmixCheckBox.Checked ? "-c copy " : "";
 
