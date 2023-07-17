@@ -48,6 +48,7 @@ namespace philwhere.ffmpeg.gui
             {
                 progressBar.Style = ProgressBarStyle.Continuous;
                 progressBar.Value = 100;
+                UpdateEverything();
             }));
         }
 
@@ -106,20 +107,37 @@ namespace philwhere.ffmpeg.gui
 
         private string BuildPrettyFfmpegArgs()
         {
-            var directory = dirTextBox.Text == _file.DirectoryName ? "" : dirTextBox.Text;
             var name = Path.GetFileNameWithoutExtension(_file.FullName);
             var container = containerGroup.Controls.OfType<RadioButton>()
                 .First(n => n.Checked).Text;
 
-            var outputFilename = Path.Join(directory, $"{name}.{container}");
-            if (outputFilename.Equals(_file.Name, StringComparison.OrdinalIgnoreCase))
-                outputFilename = Path.Join(directory, $"{name}_done.{container}");
+            var outputFilename = GetOutputFilename(name, container);
             return $"-i \"{_file.Name}\" " +
                    Environment.NewLine +
                    AspectRatioArgument +
                    StereoDownmixArgument +
                    DefaultCopyArgument +
                    $"\"{outputFilename}\"";
+        }
+
+        private string GetOutputFilename(string name, string container)
+        {
+            var cliOutputDirectory = dirTextBox.Text == _file.DirectoryName ? "" : dirTextBox.Text;
+            string outputFilename;
+            var incrementCounter = 0;
+            do
+            {
+                outputFilename = AddToFilename(name, container, incrementCounter);
+                incrementCounter++;
+            } while (File.Exists(Path.Join(dirTextBox.Text, outputFilename)));
+
+            return Path.Join(cliOutputDirectory, outputFilename);
+        }
+
+        private string AddToFilename(string name, string container, int incrementCounter)
+        {
+            var append = incrementCounter > 0 ? $"({incrementCounter})" : "";
+            return $"{name}{append}.{container}";
         }
     }
 }
