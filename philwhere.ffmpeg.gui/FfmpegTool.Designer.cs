@@ -67,6 +67,7 @@ namespace philwhere.ffmpeg.gui
             cliTextBox.Multiline = true;
             cliTextBox.Name = "cliTextBox";
             cliTextBox.ReadOnly = true;
+            cliTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             cliTextBox.Size = new System.Drawing.Size(556, 94);
             cliTextBox.TabIndex = 3;
             cliTextBox.TabStop = false;
@@ -158,9 +159,9 @@ namespace philwhere.ffmpeg.gui
             // 
             // progressBar
             // 
-            progressBar.Location = new System.Drawing.Point(96, 122);
+            progressBar.Location = new System.Drawing.Point(87, 122);
             progressBar.Name = "progressBar";
-            progressBar.Size = new System.Drawing.Size(374, 23);
+            progressBar.Size = new System.Drawing.Size(394, 23);
             progressBar.TabIndex = 7;
             // 
             // dirTextBox
