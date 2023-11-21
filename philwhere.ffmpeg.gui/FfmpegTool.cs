@@ -3,13 +3,17 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using MoreLinq;
 
 namespace philwhere.ffmpeg.gui
 {
     public partial class FfmpegTool : Form
     {
-        private FileInfo _file;
+        private FileInfo _droppedFile;
+        private DirectoryInfo _droppedDirectory;
+        private DirectoryInfo _originDirectory;
         private string _changedOutputDirectory;
         private string FfmpegScript => BuildFfmpegScript();
 
@@ -22,7 +26,7 @@ namespace philwhere.ffmpeg.gui
         }
 
 
-        private void runButton_Click(object sender, EventArgs e)
+        private async void runButton_Click(object sender, EventArgs e)
         {
             if (!Directory.Exists(dirTextBox.Text))
             {
@@ -34,10 +38,20 @@ namespace philwhere.ffmpeg.gui
                 Directory.CreateDirectory(dirTextBox.Text);
             }
 
-            RunCommandUsingCmd(FfmpegScript);
+            var script = FfmpegScript;
+            // There is a limit for arguments or something.
+            // I was way less than the documented 32,699 string size
+            // when I was testing, so I don't know. This worked for me.
+            var commands = script.Split(Environment.NewLine);
+            const int batchSize = 10; 
+            var batches = commands.Batch(batchSize);
+            // I am intentionally not running multiple process in parallel
+            // so that I can ensure any script I add runs in the order it was written.
+            foreach (var batch in batches)
+                await RunCommandUsingCmd(string.Join(Environment.NewLine, batch));
         }
 
-        private void RunCommandUsingCmd(string script)
+        private async Task RunCommandUsingCmd(string script)
         {
             // & is how to run multiple commands
             var concatenatedCommand = script.Replace(Environment.NewLine, " & ");
@@ -49,7 +63,7 @@ namespace philwhere.ffmpeg.gui
                 {
                     FileName = "cmd.exe",
                     Arguments = argumentsForCmd,
-                    WorkingDirectory = _file.DirectoryName,
+                    WorkingDirectory = _originDirectory.FullName,
                     UseShellExecute = true,
                     RedirectStandardOutput = false,
                     RedirectStandardError = false,
@@ -66,6 +80,7 @@ namespace philwhere.ffmpeg.gui
                 progressBar.Value = 100;
                 UpdateEverything();
             }));
+            await process.WaitForExitAsync();
         }
 
         private void Form_DragEnter(object sender, DragEventArgs e)
@@ -76,14 +91,29 @@ namespace philwhere.ffmpeg.gui
 
         private void Form_DragDrop(object sender, DragEventArgs e)
         {
-            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            if (files.Length > 1)
+            var droppedItems = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (droppedItems.Length > 1)
             {
-                MessageBox.Show(@"Only one file is supported currently. You can run multiple instances.");
+                MessageBox.Show(@"Only one file or folder is supported currently. You can run multiple instances.");
                 return;
             }
 
-            _file = new FileInfo(files.Single());
+            var droppedItemPath = droppedItems.Single();
+            var itemAttributes = File.GetAttributes(droppedItemPath);
+
+            if (itemAttributes.HasFlag(FileAttributes.Directory))
+            {
+                _droppedDirectory = new DirectoryInfo(droppedItemPath);
+                _originDirectory = _droppedDirectory;
+                _droppedFile = null;
+            }
+            else
+            {
+                _droppedFile = new FileInfo(droppedItemPath);
+                _originDirectory = new DirectoryInfo(_droppedFile.DirectoryName);
+                _droppedDirectory = null;
+            }
+
             TabIndex = 0;
             UpdateEverything();
         }
@@ -95,24 +125,36 @@ namespace philwhere.ffmpeg.gui
 
         private void dirTextBox_TextChanged(object sender, EventArgs e)
         {
-            _changedOutputDirectory = dirTextBox.Text == _file.DirectoryName ? null : dirTextBox.Text;
+            _changedOutputDirectory = dirTextBox.Text == (_droppedFile?.DirectoryName ?? _droppedDirectory?.FullName)
+                ? null
+                : dirTextBox.Text;
             UpdateScriptPreview();
         }
 
 
         private void UpdateEverything()
         {
-            if (_file.Exists)
+            if (_droppedFile != null || _droppedDirectory != null)
             {
-                Controls.OfType<GroupBox>().ToList().ForEach(g => g.Enabled = true);
-                aspectRatioTextBox.Enabled = !ignoreAspectRatioCheckBox.Checked;
-                aspectRatioTextBox.Font = new Font(aspectRatioTextBox.Font,
-                    ignoreAspectRatioCheckBox.Checked ? FontStyle.Strikeout : FontStyle.Regular);
-                dirTextBox.Text = _changedOutputDirectory ?? _file.DirectoryName;
+                if (_droppedFile?.Exists == true)
+                {
+                    Controls.OfType<GroupBox>().ToList().ForEach(g => g.Enabled = true);
+                    aspectRatioTextBox.Enabled = !ignoreAspectRatioCheckBox.Checked;
+                    aspectRatioTextBox.Font = new Font(aspectRatioTextBox.Font,
+                        ignoreAspectRatioCheckBox.Checked ? FontStyle.Strikeout : FontStyle.Regular);
+                    UpdateScriptPreview();
+                    aspectRatioGroupBox.Enabled = ignoreDownmixCheckBox.Checked;
+                    audioGroupBox.Enabled = ignoreAspectRatioCheckBox.Checked;
+                }
+
+                if (_droppedDirectory?.Exists == true)
+                {
+                    Controls.OfType<GroupBox>().ToList().ForEach(g => g.Enabled = false);
+                    containerGroup.Enabled = true;
+                    cliPreviewGroupBox.Enabled = true;
+                }
+                dirTextBox.Text = _changedOutputDirectory ?? _droppedFile?.DirectoryName ?? _droppedDirectory?.FullName;
             }
-            UpdateScriptPreview();
-            aspectRatioGroupBox.Enabled = ignoreDownmixCheckBox.Checked;
-            audioGroupBox.Enabled = ignoreAspectRatioCheckBox.Checked;
             progressBar.Value = 0;
         }
 
@@ -123,8 +165,33 @@ namespace philwhere.ffmpeg.gui
 
         private string BuildFfmpegScript()
         {
-            var inputFileName = $"\"{_file.Name}\"";
-            var outputFilePath = $"\"{GetOutputPath()}\"";
+            if (_droppedFile != null)
+                return BuildFileScript();
+            return BuildDirectoryScript();
+        }
+
+        private string BuildDirectoryScript()
+        {
+            var files = Directory.GetFiles(_droppedDirectory.FullName);
+            // The next line is does not cover scenarios where two files with different extensions have the same name.
+            // This is a bit hard to handle because the target container is the same.
+            // Luckily FFMPEG has the Y/N prompt. I'm not fixing this edge case.
+            var commands = files.Select(GetContainerChangeCommand); 
+            var script = string.Join(Environment.NewLine, commands);
+            return script;
+        }
+
+        private string GetContainerChangeCommand(string filePath)
+        {
+            var inputFileName = $"\"{filePath}\"";
+            var outputFilePath = $"\"{GetOutputPath(filePath)}\"";
+            return $"ffmpeg.exe -i {inputFileName} -c copy {outputFilePath}";
+        }
+
+        private string BuildFileScript()
+        {
+            var inputFileName = $"\"{_droppedFile.Name}\"";
+            var outputFilePath = $"\"{GetOutputPath(_droppedFile.FullName)}\"";
 
             if (!ignoreDownmixCheckBox.Checked)
                 return GetAudioStereoDownmixScript(inputFileName, outputFilePath);
@@ -161,14 +228,14 @@ del {temporaryVideoOnlyName}";
             return $"ffmpeg.exe -i {inputFileName} -aspect {aspectRatioTextBox.Text} -c copy {outputFilePath}";
         }
 
-        private string GetOutputPath()
+        private string GetOutputPath(string filePath)
         {
             var container = containerGroup.Controls.OfType<RadioButton>()
                 .First(n => n.Checked).Text;
 
-            var filenameWithoutExtension = Path.GetFileNameWithoutExtension(_file.FullName);
+            var filenameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
 
-            var cliOutputDirectory = dirTextBox.Text == _file.DirectoryName ? "" : dirTextBox.Text;
+            var cliOutputDirectory = dirTextBox.Text == _originDirectory.FullName ? "" : dirTextBox.Text;
             string outputFilename;
             var incrementCounter = 0;
             do
