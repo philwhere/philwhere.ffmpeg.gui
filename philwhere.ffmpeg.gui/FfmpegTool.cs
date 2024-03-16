@@ -210,7 +210,7 @@ namespace philwhere.ffmpeg.gui
             var randomGuid = Guid.NewGuid().ToString("N")[..9];
             var temporaryVideoOnlyName = $"\"{randomGuid}_video.mkv\"";
             var temporaryAudioOnlyName = $"\"{randomGuid}_audio.mka\"";
-            var temporaryAudioMonoName = $"\"{randomGuid}_audio_mono.mka\"";
+            var temporaryAudioMonoName = $"\"{randomGuid}_audio_mono.m4a\"";
 
             var script = $@"ffmpeg.exe -i {inputFileName} -map v -c copy {temporaryVideoOnlyName}
 ffmpeg.exe -i {inputFileName} -map a -c copy -vn {temporaryAudioOnlyName}
