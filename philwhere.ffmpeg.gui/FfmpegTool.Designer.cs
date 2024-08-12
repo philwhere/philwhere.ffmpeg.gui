@@ -44,11 +44,20 @@ namespace philwhere.ffmpeg.gui
             containerGroup = new System.Windows.Forms.GroupBox();
             mkvButton = new System.Windows.Forms.RadioButton();
             mp4Button = new System.Windows.Forms.RadioButton();
+            groupBox1 = new System.Windows.Forms.GroupBox();
+            checkBox1 = new System.Windows.Forms.CheckBox();
+            textBox1 = new System.Windows.Forms.TextBox();
+            label1 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            textBox2 = new System.Windows.Forms.TextBox();
+            label3 = new System.Windows.Forms.Label();
+            textBox3 = new System.Windows.Forms.TextBox();
             aspectRatioGroupBox.SuspendLayout();
             audioGroupBox.SuspendLayout();
             cliPreviewGroupBox.SuspendLayout();
             directoryGroup.SuspendLayout();
             containerGroup.SuspendLayout();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // runButton
@@ -140,7 +149,7 @@ namespace philwhere.ffmpeg.gui
             cliPreviewGroupBox.Controls.Add(cliTextBox);
             cliPreviewGroupBox.Controls.Add(runButton);
             cliPreviewGroupBox.Enabled = false;
-            cliPreviewGroupBox.Location = new System.Drawing.Point(46, 143);
+            cliPreviewGroupBox.Location = new System.Drawing.Point(46, 240);
             cliPreviewGroupBox.Name = "cliPreviewGroupBox";
             cliPreviewGroupBox.Size = new System.Drawing.Size(568, 153);
             cliPreviewGroupBox.TabIndex = 7;
@@ -176,7 +185,7 @@ namespace philwhere.ffmpeg.gui
             // 
             directoryGroup.Controls.Add(dirTextBox);
             directoryGroup.Enabled = false;
-            directoryGroup.Location = new System.Drawing.Point(46, 93);
+            directoryGroup.Location = new System.Drawing.Point(46, 190);
             directoryGroup.Name = "directoryGroup";
             directoryGroup.Size = new System.Drawing.Size(568, 47);
             directoryGroup.TabIndex = 9;
@@ -219,11 +228,98 @@ namespace philwhere.ffmpeg.gui
             mp4Button.UseVisualStyleBackColor = true;
             mp4Button.CheckedChanged += anything_Changed;
             // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(label3);
+            groupBox1.Controls.Add(textBox3);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(textBox2);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(checkBox1);
+            groupBox1.Controls.Add(textBox1);
+            groupBox1.Enabled = false;
+            groupBox1.Location = new System.Drawing.Point(46, 96);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new System.Drawing.Size(406, 61);
+            groupBox1.TabIndex = 11;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Aspect Ratio";
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Checked = true;
+            checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            checkBox1.Location = new System.Drawing.Point(331, 25);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new System.Drawing.Size(60, 19);
+            checkBox1.TabIndex = 1;
+            checkBox1.Text = "Ignore";
+            checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            textBox1.Enabled = false;
+            textBox1.Location = new System.Drawing.Point(31, 23);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new System.Drawing.Size(68, 23);
+            textBox1.TabIndex = 0;
+            textBox1.Text = "16:9";
+            textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(18, 26);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(10, 15);
+            label1.TabIndex = 2;
+            label1.Text = "I";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(113, 26);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(28, 15);
+            label2.TabIndex = 4;
+            label2.Text = "LRA";
+            // 
+            // textBox2
+            // 
+            textBox2.Enabled = false;
+            textBox2.Location = new System.Drawing.Point(144, 23);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new System.Drawing.Size(68, 23);
+            textBox2.TabIndex = 3;
+            textBox2.Text = "16:9";
+            textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(221, 26);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(20, 15);
+            label3.TabIndex = 6;
+            label3.Text = "TP";
+            // 
+            // textBox3
+            // 
+            textBox3.Enabled = false;
+            textBox3.Location = new System.Drawing.Point(244, 23);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new System.Drawing.Size(68, 23);
+            textBox3.TabIndex = 5;
+            textBox3.Text = "16:9";
+            textBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // FfmpegTool
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(664, 336);
+            ClientSize = new System.Drawing.Size(664, 416);
+            Controls.Add(groupBox1);
             Controls.Add(containerGroup);
             Controls.Add(directoryGroup);
             Controls.Add(cliPreviewGroupBox);
@@ -241,6 +337,8 @@ namespace philwhere.ffmpeg.gui
             directoryGroup.PerformLayout();
             containerGroup.ResumeLayout(false);
             containerGroup.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -261,6 +359,14 @@ namespace philwhere.ffmpeg.gui
         private System.Windows.Forms.RadioButton mp4Button;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button copyButton;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
 
