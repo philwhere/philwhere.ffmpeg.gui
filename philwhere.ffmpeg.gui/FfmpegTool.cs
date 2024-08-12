@@ -200,7 +200,7 @@ namespace philwhere.ffmpeg.gui
                 return GetAspectRatioScript(inputFileName, outputFilePath);
 
             // just change container
-            return $"ffmpeg.exe -i {inputFileName} -c copy {outputFilePath}";
+            return $"ffmpeg.exe -i {inputFileName} -map 0 -c copy {outputFilePath}";
         }
 
         private string GetAudioStereoDownmixScript(string inputFileName, string outputFilePath)
@@ -225,7 +225,7 @@ del {temporaryVideoOnlyName}";
 
         private string GetAspectRatioScript(string inputFileName, string outputFilePath)
         {
-            return $"ffmpeg.exe -i {inputFileName} -aspect {aspectRatioTextBox.Text} -c copy {outputFilePath}";
+            return $"ffmpeg.exe -i {inputFileName} -aspect {aspectRatioTextBox.Text} -map 0 -c copy {outputFilePath}";
         }
 
         private string GetOutputPath(string filePath)
