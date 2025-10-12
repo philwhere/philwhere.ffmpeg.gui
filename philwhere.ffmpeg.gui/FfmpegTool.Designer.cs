@@ -112,6 +112,31 @@ namespace philwhere.ffmpeg.gui
             // audioGroupBox
             // 
             audioGroupBox.Controls.Add(ignoreDownmixCheckBox);
+            // dB Boost TextBox
+            dbBoostPlusLabel = new System.Windows.Forms.Label();
+            dbBoostPlusLabel.Location = new System.Drawing.Point(85, 27);
+            dbBoostPlusLabel.Name = "dbBoostPlusLabel";
+            dbBoostPlusLabel.Size = new System.Drawing.Size(15, 15);
+            dbBoostPlusLabel.Text = "+";
+            dbBoostPlusLabel.Visible = false;
+            audioGroupBox.Controls.Add(dbBoostPlusLabel);
+            dbBoostTextBox = new System.Windows.Forms.TextBox();
+            dbBoostTextBox.Location = new System.Drawing.Point(100, 24);
+            dbBoostTextBox.Name = "dbBoostTextBox";
+            dbBoostTextBox.Size = new System.Drawing.Size(40, 23);
+            dbBoostTextBox.TabIndex = 3;
+            dbBoostTextBox.Text = "0";
+            dbBoostTextBox.Visible = false;
+            dbBoostTextBox.Enabled = false;
+            dbBoostTextBox.TextChanged += anything_Changed;
+            audioGroupBox.Controls.Add(dbBoostTextBox);
+            dbBoostLabel = new System.Windows.Forms.Label();
+            dbBoostLabel.Location = new System.Drawing.Point(145, 27);
+            dbBoostLabel.Name = "dbBoostLabel";
+            dbBoostLabel.Size = new System.Drawing.Size(25, 15);
+            dbBoostLabel.Text = "dB";
+            dbBoostLabel.Visible = false;
+            audioGroupBox.Controls.Add(dbBoostLabel);
             audioGroupBox.Enabled = false;
             audioGroupBox.Location = new System.Drawing.Point(252, 29);
             audioGroupBox.Name = "audioGroupBox";
@@ -131,6 +156,7 @@ namespace philwhere.ffmpeg.gui
             ignoreDownmixCheckBox.TabIndex = 2;
             ignoreDownmixCheckBox.Text = "Ignore";
             ignoreDownmixCheckBox.UseVisualStyleBackColor = true;
+            ignoreDownmixCheckBox.CheckedChanged += IgnoreDownmixCheckBox_CheckedChanged;
             ignoreDownmixCheckBox.CheckedChanged += anything_Changed;
             // 
             // cliPreviewGroupBox
@@ -253,6 +279,9 @@ namespace philwhere.ffmpeg.gui
         private System.Windows.Forms.TextBox aspectRatioTextBox;
         private System.Windows.Forms.GroupBox audioGroupBox;
         private System.Windows.Forms.CheckBox ignoreDownmixCheckBox;
+    private System.Windows.Forms.Label dbBoostPlusLabel;
+    private System.Windows.Forms.Label dbBoostLabel;
+    private System.Windows.Forms.TextBox dbBoostTextBox;
         private System.Windows.Forms.GroupBox cliPreviewGroupBox;
         private System.Windows.Forms.TextBox dirTextBox;
         private System.Windows.Forms.GroupBox directoryGroup;

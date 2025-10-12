@@ -26,6 +26,15 @@ namespace philwhere.ffmpeg.gui
         }
 
 
+        private void IgnoreDownmixCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            var showDbBoost = !ignoreDownmixCheckBox.Checked;
+            dbBoostPlusLabel.Visible = showDbBoost;
+            dbBoostTextBox.Visible = showDbBoost;
+            dbBoostTextBox.Enabled = showDbBoost;
+            dbBoostLabel.Visible = showDbBoost;
+        }
+
         private async void runButton_Click(object sender, EventArgs e)
         {
             if (!Directory.Exists(dirTextBox.Text))
@@ -212,9 +221,11 @@ namespace philwhere.ffmpeg.gui
             var temporaryAudioOnlyName = $"\"{randomGuid}_audio.mka\"";
             var temporaryAudioMonoName = $"\"{randomGuid}_audio_mono.m4a\"";
 
+            var shouldBoostDbs = !string.IsNullOrWhiteSpace(dbBoostTextBox.Text) && double.TryParse(dbBoostTextBox.Text, out var dbValue) && dbValue != 0;
+            var dbBoostArguments = shouldBoostDbs ? $"-filter:a volume={dbBoostTextBox.Text}dB " : "";
             var script = $@"ffmpeg.exe -i {inputFileName} -map v -c copy {temporaryVideoOnlyName}
 ffmpeg.exe -i {inputFileName} -map a -c copy -vn {temporaryAudioOnlyName}
-ffmpeg.exe -i {temporaryAudioOnlyName} -ac 1 {temporaryAudioMonoName}
+ffmpeg.exe -i {temporaryAudioOnlyName} -ac 1 {dbBoostArguments}{temporaryAudioMonoName}
 ffmpeg.exe -i {temporaryVideoOnlyName} -i {temporaryAudioMonoName} -c copy -map 0 -map 1 -shortest {outputFilePath}
 del {temporaryAudioOnlyName}
 del {temporaryAudioMonoName}
