@@ -268,5 +268,14 @@ del {temporaryVideoOnlyName}";
         {
             Clipboard.SetText(FfmpegScript);
         }
+
+        private void aspectRatioTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Allow numbers, colon for ratio format, period/dot for decimal, and control characters like backspace
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != ':' && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true; // Block the input
+            }
+        }
     }
 }

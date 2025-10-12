@@ -108,6 +108,7 @@ namespace philwhere.ffmpeg.gui
             aspectRatioTextBox.Text = "16:9";
             aspectRatioTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             aspectRatioTextBox.TextChanged += anything_Changed;
+            aspectRatioTextBox.KeyPress += aspectRatioTextBox_KeyPress;
             // 
             // audioGroupBox
             // 
