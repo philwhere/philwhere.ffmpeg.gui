@@ -44,6 +44,7 @@ namespace philwhere.ffmpeg.gui
             containerGroup = new System.Windows.Forms.GroupBox();
             mkvButton = new System.Windows.Forms.RadioButton();
             mp4Button = new System.Windows.Forms.RadioButton();
+            copySubsCheckBox = new System.Windows.Forms.CheckBox();
             aspectRatioGroupBox.SuspendLayout();
             audioGroupBox.SuspendLayout();
             cliPreviewGroupBox.SuspendLayout();
@@ -167,7 +168,7 @@ namespace philwhere.ffmpeg.gui
             cliPreviewGroupBox.Controls.Add(cliTextBox);
             cliPreviewGroupBox.Controls.Add(runButton);
             cliPreviewGroupBox.Enabled = false;
-            cliPreviewGroupBox.Location = new System.Drawing.Point(46, 143);
+            cliPreviewGroupBox.Location = new System.Drawing.Point(46, 158);
             cliPreviewGroupBox.Name = "cliPreviewGroupBox";
             cliPreviewGroupBox.Size = new System.Drawing.Size(568, 153);
             cliPreviewGroupBox.TabIndex = 7;
@@ -203,48 +204,62 @@ namespace philwhere.ffmpeg.gui
             // 
             directoryGroup.Controls.Add(dirTextBox);
             directoryGroup.Enabled = false;
-            directoryGroup.Location = new System.Drawing.Point(46, 93);
+            directoryGroup.Location = new System.Drawing.Point(46, 108);
             directoryGroup.Name = "directoryGroup";
             directoryGroup.Size = new System.Drawing.Size(568, 47);
             directoryGroup.TabIndex = 9;
             directoryGroup.TabStop = false;
             directoryGroup.Text = "Output Directory";
-            // 
-            // containerGroup
-            // 
-            containerGroup.Controls.Add(mkvButton);
-            containerGroup.Controls.Add(mp4Button);
-            containerGroup.Enabled = false;
-            containerGroup.Location = new System.Drawing.Point(458, 29);
-            containerGroup.Name = "containerGroup";
-            containerGroup.Size = new System.Drawing.Size(156, 61);
-            containerGroup.TabIndex = 10;
-            containerGroup.TabStop = false;
-            containerGroup.Text = "Container";
-            // 
-            // mkvButton
-            // 
-            mkvButton.AutoSize = true;
-            mkvButton.Location = new System.Drawing.Point(84, 24);
-            mkvButton.Name = "mkvButton";
-            mkvButton.Size = new System.Drawing.Size(48, 19);
-            mkvButton.TabIndex = 1;
-            mkvButton.Text = "mkv";
-            mkvButton.UseVisualStyleBackColor = true;
-            mkvButton.CheckedChanged += anything_Changed;
-            // 
-            // mp4Button
-            // 
-            mp4Button.AutoSize = true;
-            mp4Button.Checked = true;
-            mp4Button.Location = new System.Drawing.Point(20, 24);
-            mp4Button.Name = "mp4Button";
-            mp4Button.Size = new System.Drawing.Size(49, 19);
-            mp4Button.TabIndex = 0;
-            mp4Button.TabStop = true;
-            mp4Button.Text = "mp4";
-            mp4Button.UseVisualStyleBackColor = true;
-            mp4Button.CheckedChanged += anything_Changed;
+        // 
+        // containerGroup
+        // 
+        containerGroup.Controls.Add(copySubsCheckBox);
+        containerGroup.Controls.Add(mkvButton);
+        containerGroup.Controls.Add(mp4Button);
+        containerGroup.Enabled = false;
+        containerGroup.Location = new System.Drawing.Point(458, 29);
+        containerGroup.Name = "containerGroup";
+        containerGroup.Size = new System.Drawing.Size(156, 75);
+        containerGroup.TabIndex = 10;
+        containerGroup.TabStop = false;
+        containerGroup.Text = "Container";
+        // 
+        // copySubsCheckBox
+        // 
+        copySubsCheckBox.AutoSize = true;
+        copySubsCheckBox.Checked = true;
+        copySubsCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+        copySubsCheckBox.Location = new System.Drawing.Point(20, 49);
+        copySubsCheckBox.Name = "copySubsCheckBox";
+        copySubsCheckBox.Size = new System.Drawing.Size(111, 19);
+        copySubsCheckBox.TabIndex = 2;
+        copySubsCheckBox.Text = "Copy subtitles";
+        copySubsCheckBox.UseVisualStyleBackColor = true;
+        copySubsCheckBox.CheckedChanged += anything_Changed;
+        // 
+        // mkvButton
+        // 
+        mkvButton.AutoSize = true;
+        mkvButton.Location = new System.Drawing.Point(84, 24);
+        mkvButton.Name = "mkvButton";
+        mkvButton.Size = new System.Drawing.Size(48, 19);
+        mkvButton.TabIndex = 1;
+        mkvButton.Text = "mkv";
+        mkvButton.UseVisualStyleBackColor = true;
+        mkvButton.CheckedChanged += anything_Changed;
+        // 
+        // mp4Button
+        // 
+        mp4Button.AutoSize = true;
+        mp4Button.Checked = true;
+        mp4Button.Location = new System.Drawing.Point(20, 24);
+        mp4Button.Name = "mp4Button";
+        mp4Button.Size = new System.Drawing.Size(49, 19);
+        mp4Button.TabIndex = 0;
+        mp4Button.TabStop = true;
+        mp4Button.Text = "mp4";
+        mp4Button.UseVisualStyleBackColor = true;
+        mp4Button.CheckedChanged += anything_Changed;
             // 
             // FfmpegTool
             // 
@@ -291,6 +306,7 @@ namespace philwhere.ffmpeg.gui
         private System.Windows.Forms.RadioButton mp4Button;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button copyButton;
+        private System.Windows.Forms.CheckBox copySubsCheckBox;
     }
 }
 

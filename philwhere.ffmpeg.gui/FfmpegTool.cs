@@ -190,11 +190,18 @@ namespace philwhere.ffmpeg.gui
             return script;
         }
 
+        private string GetMapAndCodecArgs()
+        {
+            return copySubsCheckBox.Checked
+                ? "-map 0 -c:v copy -c:a copy -c:s copy"
+                : "-map 0:v -map 0:a -c:v copy -c:a copy";
+        }
+
         private string GetContainerChangeCommand(string filePath)
         {
             var inputFileName = $"\"{filePath}\"";
             var outputFilePath = $"\"{GetOutputPath(filePath)}\"";
-            return $"ffmpeg.exe -i {inputFileName} -c copy {outputFilePath}";
+            return $"ffmpeg.exe -i {inputFileName} {GetMapAndCodecArgs()} {outputFilePath}";
         }
 
         private string BuildFileScript()
@@ -209,7 +216,7 @@ namespace philwhere.ffmpeg.gui
                 return GetAspectRatioScript(inputFileName, outputFilePath);
 
             // just change container
-            return $"ffmpeg.exe -i {inputFileName} -c copy {outputFilePath}";
+            return $"ffmpeg.exe -i {inputFileName} {GetMapAndCodecArgs()} {outputFilePath}";
         }
 
         private string GetAudioStereoDownmixScript(string inputFileName, string outputFilePath)
@@ -236,7 +243,7 @@ del {temporaryVideoOnlyName}";
 
         private string GetAspectRatioScript(string inputFileName, string outputFilePath)
         {
-            return $"ffmpeg.exe -i {inputFileName} -aspect {aspectRatioTextBox.Text} -c copy {outputFilePath}";
+            return $"ffmpeg.exe -i {inputFileName} -aspect {aspectRatioTextBox.Text} {GetMapAndCodecArgs()} {outputFilePath}";
         }
 
         private string GetOutputPath(string filePath)
